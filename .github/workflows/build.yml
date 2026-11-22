@@ -24,6 +24,15 @@ jobs:
           rootProject.name = 'ninjaclient'
           EOF
 
+      - name: Corrigir nomes renomeados no 1.21.11
+        working-directory: ninjaclient/src/main/java/com/meuclient
+        run: |
+          sed -i 's/\bcam\.getPos()/cam.getCameraPos()/g' $(grep -rl 'cam.getPos' .)
+          sed -i 's/\btarget\.getPos()/target.getEntityPos()/g' $(grep -rl 'target.getPos' .)
+          sed -i 's/\bgolem\.getPos()/golem.getEntityPos()/g' $(grep -rl 'golem.getPos' .)
+          sed -i 's/\bp\.getPos()/p.getEntityPos()/g' PlayerTracker.java
+          sed -i 's/\bisFallFlying()/isGliding()/g' $(grep -rl 'isFallFlying' .)
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
