@@ -24,6 +24,29 @@ jobs:
           rootProject.name = 'ninjaclient'
           EOF
 
+      - name: Remover Keystraks+
+        working-directory: ninjaclient
+        run: |
+          sed -i '/^\/\/ Keystraks+/,$d' build.gradle
+          cat > src/main/resources/fabric.mod.json << 'EOF'
+          {
+            "schemaVersion": 1,
+            "id": "ninjaclient",
+            "version": "${version}",
+            "name": "NinjaClient",
+            "environment": "client",
+            "accessWidener": "ninjaclient.accesswidener",
+            "mixins": ["ninjaclient.mixins.json"],
+            "entrypoints": { "client": ["com.meuclient.MeuClient"] },
+            "depends": {
+              "fabricloader": ">=0.18.0",
+              "minecraft": "~1.21.11",
+              "java": ">=21",
+              "fabric-api": "*"
+            }
+          }
+          EOF
+
       - name: Corrigir nomes renomeados no 1.21.11
         working-directory: ninjaclient/src/main/java/com/meuclient
         run: |
